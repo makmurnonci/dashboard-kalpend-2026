@@ -66,7 +66,7 @@ dialog label{display:block;font-size:.8rem;color:var(--mut);margin-top:10px}dial
 @media print{@page{size:8.5in 14in;margin:7mm}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}:root{padding:0!important}html,body{background:#fff!important;height:auto}.w{max-width:none;padding:0}header,.ft,.w>section:not(#pdfv){display:none!important}#pdfv{display:block!important}.pt{margin-bottom:6px;padding:4px;font-size:9pt}.pt img{width:13mm;height:13mm}.pt::after{width:13mm}.pt b{font-size:11pt}.py{grid-template-columns:repeat(3,1fr)!important;gap:6px 8px}.mo{break-inside:avoid}.mo h4{font-size:8pt}.mo table{font-size:7pt}.mo th,.mo td{height:4.6mm;padding:0 2px}.lg{font-size:6pt;min-height:3.2mm;padding:0}.lg b{min-width:9mm}.sg{margin-top:8px;padding:4px;font-size:8pt;break-inside:avoid}}
 </style></head><body><div class="w">
 <header><div><h1 id="h1">Kalender Pendidikan 2025–2026</h1><p id="hp">Dinas Pendidikan dan Kebudayaan Kota Parepare</p></div>
-<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="ib" id="cf">⚙️ Pengaturan</button><button class="ib" id="ad">＋ Tambah agenda</button><button class="ib" id="vp">📅 Kalender Tahunan</button><button class="ib" id="vd">📊 Dashboard</button><button class="ib" id="pr">🖨️ Cetak / PDF</button><button class="ib" id="th">🌓 Tema</button><button class="ib" id="rs">↺ Reset</button></div></header>
+<div style="display:flex;gap:8px;flex-wrap:wrap"><select class="ib" id="hsq" title="Hari sekolah per minggu"><option value="5">5 hari sekolah</option><option value="6">6 hari sekolah</option></select><button class="ib" id="cf">⚙️ Pengaturan</button><button class="ib" id="ad">＋ Tambah agenda</button><button class="ib" id="vp">📅 Kalender Tahunan</button><button class="ib" id="vd">📊 Dashboard</button><button class="ib" id="pr">🖨️ Cetak / PDF</button><button class="ib" id="th">🌓 Tema</button><button class="ib" id="rs">↺ Reset</button></div></header>
 <section class="stats">
 <div class="card st"><b data-ef="hari">231</b><span>Hari efektif / tahun (terhitung otomatis)</span></div>
 <div class="card st"><b data-ef="minggu">48</b><span>Minggu efektif / tahun</span></div>
@@ -149,7 +149,7 @@ function cal(){
  let h=["Sen","Sel","Rab","Kam","Jum","Sab","Ahad"].map((d,i)=>`<div class="dh ${i==6?"s":""}">${d}</div>`).join("");
  const first=(new Date(y,m,1).getDay()+6)%7,n=new Date(y,m+1,0).getDate();
  for(let i=0;i<first;i++)h+=`<div class="d e"></div>`;
- for(let d=1;d<=n;d++){const dt=new Date(y,m,d),s=iso(dt),ev=evOn(s).filter(on),wd=(dt.getDay()+6)%7;if(wd>4)ev.length=0;
+ for(let d=1;d<=n;d++){const dt=new Date(y,m,d),s=iso(dt),ev=evOn(s).filter(on),wd=(dt.getDay()+6)%7;if(wd>=HS())ev.length=0;
   const pr=["nasional","libur","ujian","rapor","kegiatan"],top=pr.map(t=>ev.find(e=>e.t==t)).find(Boolean);
   const bg=top?`background:color-mix(in srgb,${ecol(top)} 16%,transparent)`:"";
   h+=`<button class="d ${wd==6?"sun":""} ${top?"bg":""} ${s==sel?"sel":""} ${s==iso(today)?"td":""}" data-s="${s}" style="${bg}"><span>${d}</span>${eff(s)===false?`<small class="neb">${(C.ov||{})[s]?"✎ ":""}TE</small>`:""}<div class="dots">${ev.map(e=>`<i style="background:${ecol(e)}"></i>`).join("")}</div></button>`}
@@ -181,13 +181,13 @@ $("th").onclick=()=>{const r=document.documentElement,d=getComputedStyle(r).getP
 const TC={nasional:"#dc2626",libur:"#facc15",ujian:"#60a5fa",kegiatan:"#c4b5fd",rapor:"#fb923c"},PR=["nasional","libur","ujian","rapor","kegiatan"];
 function pdfView(){let h="";
  for(let i=0;i<12;i++){const m=(i+6)%12,y=i<6?Y0:Y0+1,fd=new Date(y,m,1).getDay(),n=new Date(y,m+1,0).getDate();
-  const rows=["Ahad","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"].map((nm,r)=>{let c=`<th class="${r==0?"a":r==6?"b":""}">${nm}</th>`;
+  const rows=["Ahad","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"].map((nm,r)=>{let c=`<th class="${r==0?"a":r==6&&HS()==5?"b":""}">${nm}</th>`;
    for(let w=0;w<5;w++){let d=w*7+r-fd+1,t=String(d);if(d<1||d>n){c+="<td></td>";continue}if(w==4&&d+7<=n)t=d+"/"+(d+7)
     ;
     const ev=evOn(iso(new Date(y,m,d))),top=PR.map(p=>ev.find(e=>e.t==p)).find(Boolean);
     const x=ev.some(e=>e.x||e.n=="Libur Ramadhan")?" x":"";
-    const st=r>0&&r<6&&top?` style="${sw(top)};color:${ink(ecol(top))}"`:"";
-    c+=`<td class="${r==0?"a":r==6?"b":""}${x}"${st}>${t}</td>`}
+    const st=r>0&&r<=HS()&&top?` style="${sw(top)};color:${ink(ecol(top))}"`:"";
+    c+=`<td class="${r==0?"a":r==6&&HS()==5?"b":""}${x}"${st}>${t}</td>`}
    return `<tr>${c}</tr>`}).join("");
   const ms=iso(new Date(y,m,1)),me=iso(new Date(y,m,n));
   const lg=E.filter(e=>e.s<=me&&e.e>=ms).sort((a,b)=>a.s<b.s?-1:1).map(e=>{const a=P(e.s<ms?ms:e.s).getDate(),b=P(e.e>me?me:e.e).getDate();return `<div class="lg" data-id="${e.id}"><b style="${sw(e)}">${a==b?a:a+"-"+b}</b>: ${e.n}</div>`}).join("");
@@ -236,7 +236,7 @@ function applyC(){const tp=C.y+' - '+(C.y+1);
  $('pt').innerHTML=`<img src='${C.logo||LOGO0}' alt='Logo'><div class='kt'><span>${esc((C.pemda||'').toUpperCase())}</span><b>${esc(C.dinas.toUpperCase())}</b><span>KALENDER PENDIDIKAN TAHUN PELAJARAN ${tp}</span></div>`;
  $('sgn').innerHTML=`${esc(C.kota)}, ${esc(C.tgl)}<br>${esc(C.jab)}<br><br><br><b>${esc(C.nama)}</b><br>${esc(C.nip)}`;
  $('ftx').textContent=`Sumber: Kalender Pendidikan TP ${tp}, ditetapkan di ${C.kota}, ${C.tgl}.`;
- {const F=EF();document.querySelectorAll('[data-ef]').forEach(el=>el.textContent=F[el.dataset.ef])}}
+ {$('hsq').value=C.hs||5;const F=EF();document.querySelectorAll('[data-ef]').forEach(el=>el.textContent=F[el.dataset.ef])}}
 let logoTmp;['pt','sgn'].forEach(i=>{$(i).title='Klik untuk mengedit';$(i).style.cursor='pointer';$(i).onclick=()=>$('cf').click()});
 $('c_logo').onchange=()=>{const f=$('c_logo').files[0];if(!f)return;const r=new FileReader();r.onload=()=>{const im=new Image();im.onload=()=>{const k=Math.min(1,200/Math.max(im.width,im.height)),cv=document.createElement('canvas');cv.width=Math.round(im.width*k);cv.height=Math.round(im.height*k);cv.getContext('2d').drawImage(im,0,0,cv.width,cv.height);logoTmp=cv.toDataURL('image/png')};im.src=r.result};r.readAsDataURL(f)};
 $('c_lgr').onclick=()=>{logoTmp=null;$('c_logo').value='';$('cer').textContent='Logo akan dikembalikan ke bawaan setelah Terapkan.'};
@@ -263,8 +263,8 @@ function commit(){try{prevS=savedS;localStorage.setItem(KEY+'-prev',prevS);local
 $('ssv').onclick=commit;
 $('sbk').onclick=()=>{if(dirty){applySnap(savedS);dirty=false;bar()}else if(prevS){const p=prevS;applySnap(p);commit()}};
 addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
-let markMode=false;
-function defEff(s){const d=P(s);if((d.getDay()+6)%7>4)return null;if(!((s>=C.a1&&s<=C.b1)||(s>=C.a2&&s<=C.b2)))return false;return !E.some(e=>(e.t=='libur'||e.t=='nasional')&&e.s<=s&&e.e>=s)}
+let markMode=false;const HS=()=>C.hs||5;$('hsq').onchange=()=>{C.hs=+$('hsq').value;save();refresh()};
+function defEff(s){const d=P(s);if((d.getDay()+6)%7>=HS())return null;if(!((s>=C.a1&&s<=C.b1)||(s>=C.a2&&s<=C.b2)))return false;return !E.some(e=>(e.t=='libur'||e.t=='nasional')&&e.s<=s&&e.e>=s)}
 function eff(s){const v=defEff(s);if(v===null)return null;const o=(C.ov||{})[s];return o?o=='e':v}
 function toggleNE(s){const v=eff(s);if(v===null)return;const want=!v;C.ov={...(C.ov||{})};if(want===defEff(s))delete C.ov[s];else C.ov[s]=want?'e':'x';save()}
 function EF(){let h=0;const w1=new Set(),w2=new Set();for(let d=new Date(START);d<=END;d.setDate(d.getDate()+1)){const s=iso(d);if(eff(s)===true){h++;const mo=new Date(d);mo.setDate(d.getDate()-(d.getDay()+6)%7);(s<=C.b1?w1:w2).add(iso(mo))}}return{hari:h,s1:w1.size,s2:w2.size,minggu:w1.size+w2.size}}
