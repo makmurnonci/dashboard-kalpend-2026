@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="id"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Dashboard Kalender Pendidikan 2025–2026</title>
+<style>
+:root{box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+--bg:#f4f6fa;--card:#fff;--tx:#14213d;--mut:#64708a;--bd:#e3e8f0;--pri:#1d4ed8;
+--libur:#f59e0b;--nas:#dc2626;--ujian:#2563eb;--kegiatan:#7c3aed;--rapor:#0d9488;--sun:#dc2626}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0e1424;--card:#171f35;--tx:#e8ecf6;--mut:#93a0bd;--bd:#27314d;--pri:#6b94ff;--libur:#fbbf24;--nas:#f87171;--ujian:#60a5fa;--kegiatan:#a78bfa;--rapor:#2dd4bf;--sun:#f87171}}
+:root[data-theme="dark"]{--bg:#0e1424;--card:#171f35;--tx:#e8ecf6;--mut:#93a0bd;--bd:#27314d;--pri:#6b94ff;--libur:#fbbf24;--nas:#f87171;--ujian:#60a5fa;--kegiatan:#a78bfa;--rapor:#2dd4bf;--sun:#f87171}
+html{height:100%;scroll-padding-top:env(safe-area-inset-top,0px)}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.5 system-ui,-apple-system,"Segoe UI",Roboto,sans-serif}
+.w{max-width:1180px;margin:0 auto;padding:18px 16px 90px}
+header{display:flex;gap:14px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:16px}
+h1{font-size:1.35rem;margin:0;line-height:1.2}header p{margin:2px 0 0;color:var(--mut);font-size:.85rem}
+button{font:inherit;color:inherit;cursor:pointer}
+.ib{border:1px solid var(--bd);background:var(--card);border-radius:10px;padding:7px 12px}
+.card{background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:16px}
+.stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:12px;margin-bottom:14px}
+.st b{display:block;font-size:1.8rem;line-height:1.1}.st span{color:var(--mut);font-size:.8rem}
+.hero{display:grid;grid-template-columns:1.2fr 1fr;gap:12px;margin-bottom:14px}
+.hero h3,.side h3{margin:0 0 8px;font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--mut)}
+.big{font-size:1.25rem;font-weight:700}
+.bar{height:9px;background:var(--bd);border-radius:9px;overflow:hidden;margin:6px 0 12px}.bar i{display:block;height:100%;background:var(--pri);border-radius:9px}
+.row{display:flex;justify-content:space-between;font-size:.82rem;color:var(--mut)}
+.main{display:grid;grid-template-columns:1.6fr 1fr;gap:12px}
+.nav{display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px}
+.nav h2{margin:0;font-size:1.1rem}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px}
+.chip{border:1px solid var(--bd);background:transparent;border-radius:99px;padding:3px 11px;font-size:.8rem;display:flex;align-items:center;gap:6px}
+.chip.off{opacity:.4}.chip i{width:9px;height:9px;border-radius:50%;display:inline-block}
+.mt{display:flex;gap:4px;overflow-x:auto;margin-bottom:10px;padding-bottom:4px}
+.mt button{border:1px solid var(--bd);background:transparent;border-radius:8px;padding:3px 9px;font-size:.78rem;white-space:nowrap}
+.mt button.on{background:var(--pri);color:#fff;border-color:var(--pri)}
+.cal{display:grid;grid-template-columns:repeat(7,1fr);gap:4px}
+.dh{text-align:center;font-size:.72rem;color:var(--mut);padding:4px 0;font-weight:600}.dh.s{color:var(--sun)}
+.d{aspect-ratio:1/.9;min-height:46px;border:1px solid var(--bd);border-radius:9px;padding:4px 5px;position:relative;background:transparent;text-align:left;display:flex;flex-direction:column;justify-content:space-between}
+.d.e{border:0;cursor:default}.d.sun span{color:var(--sun)}
+.d span{font-size:.82rem;font-weight:600}.d.sel{outline:2px solid var(--pri)}.d.td{box-shadow:inset 0 0 0 2px var(--pri)}
+.dots{display:flex;gap:3px;flex-wrap:wrap}.dots i{width:7px;height:7px;border-radius:50%}
+.d.bg{border-color:transparent}
+.side{display:flex;flex-direction:column;gap:12px}
+.det{min-height:70px}.det .it{margin-top:6px}
+.it{display:flex;gap:9px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--bd);font-size:.87rem}
+.it:last-child{border:0}.it i{width:10px;height:10px;border-radius:50%;margin-top:6px;flex:none}
+.it small{display:block;color:var(--mut);font-size:.76rem}.it em{margin-left:auto;font-style:normal;font-size:.75rem;color:var(--mut);white-space:nowrap}
+.list{max-height:360px;overflow-y:auto}
+.muted{color:var(--mut)}
+.ft{margin-top:16px;font-size:.76rem;color:var(--mut);text-align:center}
+@media(max-width:820px){.hero,.main{grid-template-columns:1fr}.d{min-height:40px}}
+.pt{text-align:center;border:2px solid #111;background:#dbeaf3;color:#111;padding:8px;margin-bottom:12px;border-radius:4px}.pt b{display:block;font-size:1.15rem}
+.py{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);color:var(--tx);padding:18px;width:min(440px,92vw)}dialog::backdrop{background:rgba(0,0,0,.45)}
+dialog label{display:block;font-size:.8rem;color:var(--mut);margin-top:10px}dialog input:not([type=checkbox]):not([type=color]),dialog select{width:100%;font:inherit;padding:7px 9px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx)}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.sw{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.sw button[data-c]{width:22px;height:22px;border-radius:50%;border:2px solid #fff6;padding:0}
+.pg{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:4px}.pg button{border:2px solid var(--bd);background:transparent;border-radius:8px;padding:4px;font-size:.68rem;color:var(--tx)}.pg button.on{border-color:var(--pri)}.pg span{display:block;height:22px;border-radius:4px;border:1px solid #0004;margin-bottom:2px}
+.eb{border:0;background:transparent;color:var(--mut);padding:0 4px;font-size:.95rem}.lg[data-id]{cursor:pointer}.lg[data-id]:hover{background:#eee}
+.act{display:flex;gap:8px;margin-top:16px}.act .sp{flex:1}.bad{color:var(--nas)}.cg{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}.cg .f{grid-column:1/-1}.mo h4{position:relative}.rm{position:absolute;right:3px;top:50%;transform:translateY(-50%);font-size:.65rem;padding:0 5px;border:1px solid #555;border-radius:6px;background:#fff;color:#111;cursor:pointer}#sb{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:8px 12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;box-shadow:0 6px 24px #0003;z-index:20;font-size:.85rem;max-width:94vw}#sb .ib:disabled{opacity:.4;cursor:default}.neb{position:absolute;top:3px;right:5px;font-size:.6rem;color:var(--nas);font-weight:700}.mm.on{background:var(--pri);color:#fff}@media print{.eb,.rm,#sb{display:none!important}}
+.mo{background:#fff;color:#111}.mo h4{margin:0;text-align:center;background:#d9d2e9;border:2px solid #111;border-bottom:0;font-size:.85rem;padding:2px}
+.mo table{width:100%;border-collapse:collapse;font-size:.78rem}.mo th,.mo td{border:1px solid #222;padding:1px 3px;text-align:center;height:19px}.mo th{text-align:left;font-weight:700;width:17%}.mo thead th{text-align:center;background:#d9d2e9}
+.mo th.a{background:#e00;color:#fff}.mo th.b{background:#777;color:#fff}.mo td.a{background:#e00;color:#fff;font-weight:700}.mo td.b{background:#777;color:#fff;font-weight:700}.mo td.x{text-decoration:none}
+.lg{font-size:.72rem;display:flex;gap:5px;padding:1px 0;min-height:16px;border-bottom:1px solid #bbb}.lg b{min-width:42px;text-align:center;border:1px solid #222}
+.sg{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;background:#fff;color:#111;padding:12px;margin-top:14px;font-size:.85rem}.sg table{border-collapse:collapse}.sg td{border:1px solid #222;padding:2px 8px}
+@media(max-width:1000px){.py{grid-template-columns:1fr 1fr}}@media(max-width:640px){.py{grid-template-columns:1fr}}
+@media print{@page{size:8.5in 14in;margin:7mm}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}:root{padding:0!important}html,body{background:#fff!important;height:auto}.w{max-width:none;padding:0}header,.ft,.w>section:not(#pdfv){display:none!important}#pdfv{display:block!important}.pt{margin-bottom:6px;padding:4px;font-size:9pt}.pt b{font-size:11pt}.py{grid-template-columns:repeat(3,1fr)!important;gap:6px 8px}.mo{break-inside:avoid}.mo h4{font-size:8pt}.mo table{font-size:7pt}.mo th,.mo td{height:4.6mm;padding:0 2px}.lg{font-size:6pt;min-height:3.2mm;padding:0}.lg b{min-width:9mm}.sg{margin-top:8px;padding:4px;font-size:8pt;break-inside:avoid}}
+</style></head><body><div class="w">
+<header><div><h1 id="h1">Kalender Pendidikan 2025–2026</h1><p id="hp">Dinas Pendidikan dan Kebudayaan Kota Parepare</p></div>
+<div style="display:flex;gap:8px;flex-wrap:wrap"><button class="ib" id="cf">⚙️ Pengaturan</button><button class="ib" id="ad">＋ Tambah agenda</button><button class="ib" id="vp">📅 Kalender Tahunan</button><button class="ib" id="vd">📊 Dashboard</button><button class="ib" id="pr">🖨️ Cetak / PDF</button><button class="ib" id="th">🌓 Tema</button><button class="ib" id="rs">↺ Reset</button></div></header>
+<section class="stats">
+<div class="card st"><b data-ef="hari">231</b><span>Hari efektif / tahun (terhitung otomatis)</span></div>
+<div class="card st"><b data-ef="minggu">48</b><span>Minggu efektif / tahun</span></div>
+<div class="card st"><b data-ef="s1">25</b><span>Minggu efektif Semester I</span></div>
+<div class="card st"><b data-ef="s2">23</b><span>Minggu efektif Semester II</span></div></section>
+<section class="hero">
+<div class="card"><h3>Status hari ini</h3><div id="now"></div></div>
+<div class="card"><h3>Progres tahun pelajaran</h3><div id="prog"></div></div></section>
+<section class="main">
+<div class="card"><div class="chips" id="chips"></div><div class="mt" id="mt"></div><div style="margin-bottom:8px"><button class="ib" data-rm="cur" style="font-size:.8rem;padding:3px 10px">↺ Reset warna agenda bulan ini</button> <button class="ib mm" id="mm" style="font-size:.8rem;padding:3px 10px">✎ Mode tandai tidak efektif: MATI</button></div>
+<div class="nav"><button class="ib" id="pv">←</button><h2 id="mn"></h2><button class="ib" id="nx">→</button></div>
+<div class="cal" id="cal"></div></div>
+<div class="side"><div class="card det"><h3 id="dt">Detail tanggal</h3><div id="dd" class="muted">Pilih tanggal pada kalender.</div><div id="ne" style="margin-top:10px"></div></div>
+<div class="card"><h3>Agenda mendatang</h3><div class="list" id="up"></div></div></div></section>
+<section class="card" style="margin-top:12px"><h3 style="margin:0 0 6px;font-size:.8rem;text-transform:uppercase;letter-spacing:.06em;color:var(--mut)">Seluruh agenda tahun pelajaran</h3><div id="all"></div></section>
+<section id="pdfv"><div class="pt" id="pt"></div><div class="py" id="py"></div>
+<div class="sg"><table><tr><td>Minggu Efektif / Sem 1 &amp; 2</td><td data-ef="s1">25</td><td data-ef="s2">23</td></tr><tr><td>Hari Efektif / Tahun</td><td colspan="2" data-ef="hari">231</td></tr><tr><td>Minggu Efektif / Tahun</td><td colspan="2" data-ef="minggu">48</td></tr></table>
+<div style="text-align:center" id="sgn"></div></div></section>
+<div id='sb'><span id='sst'></span><button class='ib' id='sbk'>↩ Versi sebelumnya</button><button class='ib' id='ssv' style='background:var(--pri);color:#fff;border-color:var(--pri)'>💾 Simpan</button></div><dialog id='cfd' style='max-height:92vh;overflow:auto'><h3 style='margin:0'>Pengaturan kalender</h3><div id='cfb' class='cg'></div><div class='muted' style='font-size:.75rem;margin-top:8px'>Mengubah tahun pelajaran menggeser semua tanggal agenda ke tahun baru. Periksa kembali hari libur karena harinya bisa berbeda.</div><div id='cer' class='bad' style='font-size:.8rem;margin-top:6px'></div><div class='act'><span class='sp'></span><button class='ib' id='cfc'>Batal</button><button class='ib' id='cfs' style='background:var(--pri);color:#fff;border-color:var(--pri)'>Terapkan</button></div></dialog><dialog id='ed'><h3 id='edt' style='margin:0'>Agenda</h3>
+<label>Nama agenda<input id='fn'></label>
+<div class='g2'><label>Mulai<input type='date' id='fs'></label><label>Selesai<input type='date' id='fe'></label></div>
+<label>Kategori<select id='fk'></select></label>
+<label>Warna</label><div class='sw'><input type='color' id='fc'><span id='pal' class='sw'></span><button class='ib' id='fcr' style='font-size:.75rem;padding:3px 8px'>Default kategori</button></div>
+<label>Model arsir</label><div class='pg' id='fp'></div>
+<label hidden><input type='checkbox' id='fx'> Coret tanggal (hari tidak efektif)</label>
+<div id='er' class='bad' style='font-size:.8rem;margin-top:8px'></div>
+<div class='act'><button class='ib' id='fdel'>Hapus</button><span class='sp'></span><button class='ib' id='fcn'>Batal</button><button class='ib' id='fsv' style='background:var(--pri);color:#fff;border-color:var(--pri)'>Terapkan</button></div></dialog>
+<p class="ft" id="ftx">Sumber: Kalender Pendidikan TP 2025–2026, ditetapkan Parepare, 1 Juni 2025. Libur Ramadhan diasumsikan 18 Feb–18 Mar 2026 sesuai coretan pada kalender.</p>
+</div>
+<script>
+const T={nasional:["Hari besar & cuti","--nas"],libur:["Libur sekolah","--libur"],ujian:["Ujian & asesmen","--ujian"],kegiatan:["Kegiatan sekolah","--kegiatan"],rapor:["Nilai & rapor","--rapor"]};
+let E=[
+["2025-07-01","2025-07-11","libur","Liburan Semester II"],["2025-07-14","2025-07-16","kegiatan","MPLS"],
+["2025-08-17","2025-08-17","nasional","HUT Kemerdekaan RI ke-80"],["2025-08-25","2025-08-28","ujian","ANBK SMP"],
+["2025-09-05","2025-09-05","nasional","Maulid Nabi Muhammad SAW"],["2025-09-08","2025-09-12","ujian","STS (Semester I)"],
+["2025-09-22","2025-09-25","ujian","ANBK SD Tahap 1"],["2025-09-29","2025-09-30","ujian","ANBK SD Tahap 2"],
+["2025-10-01","2025-10-02","ujian","ANBK SD Tahap II"],["2025-12-08","2025-12-12","ujian","SAS (Semester I)"],
+["2025-12-15","2025-12-18","rapor","Pengelolaan Nilai"],["2025-12-19","2025-12-19","rapor","Pembagian Rapor Semester I"],
+["2025-12-22","2025-12-26","libur","Liburan Semester I"],["2025-12-25","2025-12-26","nasional","Hari Natal dan cuti bersama"],
+["2026-01-01","2026-01-01","nasional","Tahun Baru Masehi"],["2026-01-16","2026-01-16","nasional","Isra’ Mi’raj"],
+["2026-02-09","2026-02-13","ujian","STS (Semester II)"],["2026-02-17","2026-02-17","nasional","Tahun Baru Imlek"],
+["2026-02-18","2026-03-18","libur","Libur Ramadhan"],["2026-03-19","2026-03-19","nasional","Hari Raya Nyepi"],
+["2026-03-20","2026-03-20","nasional","Idul Fitri 1447 H"],["2026-03-23","2026-03-25","nasional","Cuti bersama"],
+["2026-04-03","2026-04-03","nasional","Wafat Yesus Kristus"],["2026-05-01","2026-05-01","nasional","Hari Buruh"],
+["2026-05-11","2026-05-22","ujian","US dan US Susulan"],["2026-05-14","2026-05-14","nasional","Kenaikan Yesus Kristus"],
+["2026-05-27","2026-05-27","nasional","Hari Raya Idul Adha"],["2026-05-31","2026-05-31","nasional","Hari Raya Waisak"],
+["2026-06-01","2026-06-01","nasional","Hari Lahir Pancasila"],["2026-06-08","2026-06-12","ujian","SAS (Semester II)"],
+["2026-06-15","2026-06-18","rapor","Pengelolaan Nilai"],["2026-06-16","2026-06-16","nasional","Tahun Baru Hijriah 1448"],
+["2026-06-19","2026-06-19","rapor","Pembagian Rapor Semester II"],["2026-06-22","2026-06-30","libur","Liburan Semester II"]
+].map(([s,e,t,n],i)=>({id:"b"+i,s,e,t,n}));
+const E0=JSON.stringify(E),KEY="kalpend-agenda-v1";
+try{const a=JSON.parse(localStorage.getItem(KEY)||"null");if(Array.isArray(a)&&a.every(x=>x.id&&x.s&&x.e&&T[x.t]))E=a}catch(_){}
+let dirty=false;function save(){dirty=true;bar()}
+const C0={y:2025,dinas:'Dinas Pendidikan dan Kebudayaan Kota Parepare',kota:'Parepare',tgl:'1 Juni 2025',jab:'Kepala Dinas Pendidikan dan Kebudayaan Kota Parepare',nama:'HE H. M. MAKMUR HUSAIN, S.Pd, MM.',nip:'NIP 19710913 199702 1 002',hari:231,minggu:48,s1:25,s2:23,a1:'2025-07-14',b1:'2025-12-19',a2:'2026-01-05',b2:'2026-06-19'};
+let C={...C0};try{const c=JSON.parse(localStorage.getItem(KEY+'-cfg')||'null');if(c&&c.y)C={...C0,...c}}catch(_){}
+function saveC(){dirty=true;bar()}
+const MN=["Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"];
+const MS=["Jan","Feb","Mar","Apr","Mei","Jun","Jul","Agu","Sep","Okt","Nov","Des"];
+const $=i=>document.getElementById(i), P=s=>new Date(s+"T00:00:00");
+const iso=d=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+const fm=s=>{const d=P(s);return d.getDate()+" "+MS[d.getMonth()]+" "+d.getFullYear()};
+const rng=e=>e.s==e.e?fm(e.s):fm(e.s)+" – "+fm(e.e);
+const col=t=>`var(${T[t][1]})`;
+let Y0=C.y,START=P(Y0+"-07-01"),END=P((Y0+1)+"-06-30"),now=new Date(),today=new Date(now.getFullYear(),now.getMonth(),now.getDate());
+let inYear=today>=START&&today<=END;
+let clamp=today<START?START:today>END?END:today;
+let mi=(clamp.getFullYear()-Y0)*12+clamp.getMonth()-6,sel=inYear?iso(today):null,off=new Set();
+const on=e=>!off.has(e.t);
+const evOn=s=>E.filter(e=>e.s<=s&&e.e>=s);
+const days=(a,b)=>Math.round((b-a)/864e5);
+
+function chips(){$("chips").innerHTML=Object.keys(T).map(k=>`<button class="chip ${off.has(k)?"off":""}" data-k="${k}"><i style="background:${col(k)}"></i>${T[k][0]}</button>`).join("");
+ $("chips").querySelectorAll("button").forEach(b=>b.onclick=()=>{off.has(b.dataset.k)?off.delete(b.dataset.k):off.add(b.dataset.k);chips();cal();lists()})}
+function tabs(){$("mt").innerHTML=Array.from({length:12},(_,i)=>{const m=(i+6)%12,y=i<6?Y0:Y0+1;return `<button class="${i==mi?"on":""}" data-i="${i}">${MS[m]} ${String(y).slice(2)}</button>`}).join("");
+ $("mt").querySelectorAll("button").forEach(b=>b.onclick=()=>{mi=+b.dataset.i;cal()})}
+function cal(){
+ const m=(mi+6)%12,y=mi<6?Y0:Y0+1;$("mn").textContent=MN[m]+" "+y;tabs();
+ $("pv").disabled=mi==0;$("nx").disabled=mi==11;
+ let h=["Sen","Sel","Rab","Kam","Jum","Sab","Ahad"].map((d,i)=>`<div class="dh ${i==6?"s":""}">${d}</div>`).join("");
+ const first=(new Date(y,m,1).getDay()+6)%7,n=new Date(y,m+1,0).getDate();
+ for(let i=0;i<first;i++)h+=`<div class="d e"></div>`;
+ for(let d=1;d<=n;d++){const dt=new Date(y,m,d),s=iso(dt),ev=evOn(s).filter(on),wd=(dt.getDay()+6)%7;if(wd>4)ev.length=0;
+  const pr=["nasional","libur","ujian","rapor","kegiatan"],top=pr.map(t=>ev.find(e=>e.t==t)).find(Boolean);
+  const bg=top?`background:color-mix(in srgb,${ecol(top)} 16%,transparent)`:"";
+  h+=`<button class="d ${wd==6?"sun":""} ${top?"bg":""} ${s==sel?"sel":""} ${s==iso(today)?"td":""}" data-s="${s}" style="${bg}"><span>${d}</span>${eff(s)===false?`<small class="neb">${(C.ov||{})[s]?"✎ ":""}TE</small>`:""}<div class="dots">${ev.map(e=>`<i style="background:${ecol(e)}"></i>`).join("")}</div></button>`}
+ $("cal").innerHTML=h;
+ $("cal").querySelectorAll("button.d").forEach(b=>b.onclick=()=>{sel=b.dataset.s;if(markMode){toggleNE(sel);refresh()}else cal();detail()});detail()}
+function item(e,extra){return `<div class="it"><i style="${sw(e)}"></i><div>${e.n}<small>${rng(e)} · ${T[e.t][0]}</small></div>${extra?`<em>${extra}</em>`:""}<button class="eb" data-id="${e.id}" title="Edit agenda">✎</button></div>`}
+function detail(){neBox();if(!sel){return}const d=P(sel),ev=evOn(sel);
+ $("dt").textContent=["Ahad","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"][d.getDay()]+", "+fm(sel);
+ const wk=d.getDay()==0||d.getDay()==6;
+ $("dd").innerHTML=ev.length?ev.map(e=>item(e)).join(""):`<span class="muted">${wk?"Akhir pekan, tidak ada agenda.":"Hari belajar biasa, tidak ada agenda khusus."}</span>`}
+function lists(){
+ const up=E.filter(e=>on(e)&&P(e.e)>=today).sort((a,b)=>a.s<b.s?-1:1).slice(0,8);
+ $("up").innerHTML=up.length?up.map(e=>{const k=days(today,P(e.s));return item(e,k<=0?"berlangsung":k+" hari lagi")}).join(""):`<span class="muted">Tidak ada agenda mendatang pada tahun pelajaran ini.</span>`;
+ $("all").innerHTML=`<div class="list" style="max-height:420px">`+E.filter(on).sort((a,b)=>a.s<b.s?-1:1).map(e=>item(e)).join("")+`</div>`}
+function status(){
+ const s1=[P(C.a1),P(C.b1)],s2=[P(C.a2),P(C.b2)],tot=days(s1[0],s2[1]);
+ const pc=Math.max(0,Math.min(100,Math.round(days(s1[0],today)/tot*100)));
+ let sm=today<s1[0]?"Belum dimulai":today<=s1[1]?"Semester I":today<=s2[0]?"Libur antar semester":today<=s2[1]?"Semester II":"Tahun pelajaran selesai";
+ const cur=evOn(iso(today));let h;
+ if(!inYear)h=`<div class="big">Di luar tahun pelajaran</div><div class="muted">Hari ini ${fm(iso(today))}. Kalender ini berlaku 1 Juli ${Y0} – 30 Juni ${Y0+1}.</div>`;
+ else h=`<div class="big">${sm}</div>`+(cur.length?cur.map(e=>item(e)).join(""):`<div class="muted">Tidak ada agenda khusus hari ini.</div>`);
+ $("now").innerHTML=h;
+ const f=(a,b)=>Math.max(0,Math.min(100,Math.round(days(a,today)/days(a,b)*100)));
+ $("prog").innerHTML=`<div class="row"><span>Keseluruhan</span><b>${pc}%</b></div><div class="bar"><i style="width:${pc}%"></i></div>
+ <div class="row"><span>Semester I (${fm(C.a1)} – ${fm(C.b1)})</span><b>${f(s1[0],s1[1])}%</b></div><div class="bar"><i style="width:${f(s1[0],s1[1])}%"></i></div>
+ <div class="row"><span>Semester II (${fm(C.a2)} – ${fm(C.b2)})</span><b>${f(s2[0],s2[1])}%</b></div><div class="bar"><i style="width:${f(s2[0],s2[1])}%"></i></div>`}
+$("pv").onclick=()=>{if(mi>0){mi--;cal()}};$("nx").onclick=()=>{if(mi<11){mi++;cal()}};
+$("th").onclick=()=>{const r=document.documentElement,d=getComputedStyle(r).getPropertyValue("--bg").trim()=="#0e1424";r.dataset.theme=d?"light":"dark"};
+const TC={nasional:"#dc2626",libur:"#facc15",ujian:"#60a5fa",kegiatan:"#c4b5fd",rapor:"#fb923c"},PR=["nasional","libur","ujian","rapor","kegiatan"];
+function pdfView(){let h="";
+ for(let i=0;i<12;i++){const m=(i+6)%12,y=i<6?Y0:Y0+1,fd=new Date(y,m,1).getDay(),n=new Date(y,m+1,0).getDate();
+  const rows=["Ahad","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"].map((nm,r)=>{let c=`<th class="${r==0?"a":r==6?"b":""}">${nm}</th>`;
+   for(let w=0;w<5;w++){let d=w*7+r-fd+1,t=String(d);if(d<1||d>n){c+="<td></td>";continue}if(w==4&&d+7<=n)t=d+"/"+(d+7)
+    ;
+    const ev=evOn(iso(new Date(y,m,d))),top=PR.map(p=>ev.find(e=>e.t==p)).find(Boolean);
+    const x=ev.some(e=>e.x||e.n=="Libur Ramadhan")?" x":"";
+    const st=r>0&&r<6&&top?` style="${sw(top)};color:${ink(ecol(top))}"`:"";
+    c+=`<td class="${r==0?"a":r==6?"b":""}${x}"${st}>${t}</td>`}
+   return `<tr>${c}</tr>`}).join("");
+  const ms=iso(new Date(y,m,1)),me=iso(new Date(y,m,n));
+  const lg=E.filter(e=>e.s<=me&&e.e>=ms).sort((a,b)=>a.s<b.s?-1:1).map(e=>{const a=P(e.s<ms?ms:e.s).getDate(),b=P(e.e>me?me:e.e).getDate();return `<div class="lg" data-id="${e.id}"><b style="${sw(e)}">${a==b?a:a+"-"+b}</b>: ${e.n}</div>`}).join("");
+  h+=`<div class="mo"><h4>${MN[m].toUpperCase()} ${y}<button class='rm' data-rm='${i}' title='Kembalikan warna agenda bulan ini ke normal'>↺ warna</button></h4><table><thead><tr><th>Hari</th><th>I</th><th>II</th><th>III</th><th>IV</th><th>V</th></tr></thead><tbody>${rows}</tbody></table>${lg}</div>`}
+ $("py").innerHTML=h}
+function setView(v){document.querySelectorAll(".w>section:not(#pdfv)").forEach(s=>s.hidden=v=="pdf");$("pdfv").hidden=v!="pdf"}
+$("vp").onclick=()=>setView("pdf");$("vd").onclick=()=>setView("dash");$("pr").onclick=()=>{setView("pdf");window.print()};
+const PT={solid:['Polos',''],diag:['Miring ╱','repeating-linear-gradient(45deg,rgba(0,0,0,.4) 0 1px,transparent 1px 4px)'],back:['Miring ╲','repeating-linear-gradient(-45deg,rgba(0,0,0,.4) 0 1px,transparent 1px 4px)'],horiz:['Mendatar','repeating-linear-gradient(0deg,rgba(0,0,0,.4) 0 1px,transparent 1px 4px)'],vert:['Tegak','repeating-linear-gradient(90deg,rgba(0,0,0,.4) 0 1px,transparent 1px 4px)'],cross:['Silang','repeating-linear-gradient(45deg,rgba(0,0,0,.4) 0 1px,transparent 1px 4px),repeating-linear-gradient(-45deg,rgba(0,0,0,.4) 0 1px,transparent 1px 4px)'],dots:['Titik','radial-gradient(rgba(0,0,0,.5) 1px,transparent 1.5px)']};
+const ecol=e=>e.c||TC[e.t];
+const patcss=p=>!p||p=='solid'||!PT[p]?'':`background-image:${PT[p][1]};`+(p=='dots'?'background-size:4px 4px;':'');
+const sw=e=>`background-color:${ecol(e)};${patcss(e.p)}`;
+const ink=h=>{const n=parseInt(h.slice(1),16),r=n>>16,g=n>>8&255,b=n&255;return (r*299+g*587+b*114)/1000>150?'#111':'#fff'};
+let edId=null,cc=null,cp='solid',delArm=false,rsArm=false;
+function refresh(){applyC();chips();cal();lists();status();pdfView()}
+function pats(){const c=$('fc').value;$('fp').innerHTML=Object.keys(PT).map(k=>`<button data-p='${k}' class='${k==cp?'on':''}'><span style='background-color:${c};${patcss(k)}'></span>${PT[k][0]}</button>`).join('');
+ $('fp').querySelectorAll('button').forEach(b=>b.onclick=()=>{cp=b.dataset.p;pats()})}
+function openEd(id){const e=id?E.find(x=>x.id==id):null;edId=e?e.id:null;delArm=false;const d=sel||iso(clamp);
+ $('edt').textContent=e?'Edit agenda':'Tambah agenda';$('fn').value=e?e.n:'';$('fs').value=e?e.s:d;$('fe').value=e?e.e:d;$('fk').value=e?e.t:'kegiatan';
+ cc=e&&e.c?e.c:null;cp=e&&e.p?e.p:'solid';$('fc').value=cc||TC[$('fk').value];$('fx').checked=!!(e&&e.x);
+ $('fdel').style.display=e?'':'none';$('fdel').textContent='Hapus';$('er').textContent='';pats();$('ed').showModal()}
+$('fk').innerHTML=Object.keys(T).map(k=>`<option value='${k}'>${T[k][0]}</option>`).join('');
+$('pal').innerHTML=['#dc2626','#f97316','#facc15','#22c55e','#14b8a6','#60a5fa','#2563eb','#a78bfa','#ec4899','#9ca3af'].map(c=>`<button data-c='${c}' style='background:${c}'></button>`).join('');
+$('pal').querySelectorAll('button').forEach(b=>b.onclick=()=>{cc=b.dataset.c;$('fc').value=cc;pats()});
+$('fc').oninput=()=>{cc=$('fc').value;pats()};
+$('fk').onchange=()=>{if(!cc)$('fc').value=TC[$('fk').value];pats()};
+$('fcr').onclick=()=>{cc=null;$('fc').value=TC[$('fk').value];pats()};
+$('fsv').onclick=()=>{const n=$('fn').value.trim(),s=$('fs').value,e=$('fe').value;
+ if(!n){$('er').textContent='Nama agenda wajib diisi.';return}
+ if(!s||!e||s>e){$('er').textContent='Tanggal tidak valid: selesai harus sama atau setelah mulai.';return}
+ const o={s,e,t:$('fk').value,n,c:cc||undefined,p:cp=='solid'?undefined:cp,x:$('fx').checked||undefined};
+ if(edId){const i=E.findIndex(x=>x.id==edId);E[i]={...o,id:edId}}else E.push({...o,id:'u'+Date.now()});
+ save();$('ed').close();refresh()};
+$('fdel').onclick=()=>{if(!delArm){delArm=true;$('fdel').textContent='Klik lagi untuk hapus';return}E=E.filter(x=>x.id!=edId);save();$('ed').close();refresh()};
+$('fcn').onclick=()=>$('ed').close();$('ad').onclick=()=>openEd(null);
+$('rs').onclick=()=>{if(!rsArm){rsArm=true;$('rs').textContent='Klik lagi: reset';setTimeout(()=>{rsArm=false;$('rs').textContent='↺ Reset'},3000);return}
+ rsArm=false;$('rs').textContent='↺ Reset';E=JSON.parse(E0);C={...C0};save();syncY();applyC();refresh()};
+document.addEventListener('click',ev=>{const t=ev.target.closest('[data-id]');if(t)openEd(t.dataset.id)});
+const esc=s=>String(s).replace(/[&<>]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;'}[c]));
+const shiftY=(s,d)=>(+s.slice(0,4)+d)+s.slice(4);
+const FL=[['dinas','Nama dinas','text',1],['y','Tahun pelajaran mulai (2025 = 2025/2026)','number'],['kota','Kota','text'],['tgl','Tanggal penetapan','text'],['jab','Jabatan penandatangan','text',1],['nama','Nama kepala dinas','text',1],['nip','NIP','text',1],['a1','Mulai Semester I','date'],['b1','Akhir Semester I','date'],['a2','Mulai Semester II','date'],['b2','Akhir Semester II','date']];
+const NUM=['y','hari','minggu','s1','s2'];
+$('cfb').innerHTML=FL.map(([k,l,t,f])=>`<label class='${f?'f':''}'>${l}<input id='c_${k}' type='${t}'></label>`).join('');
+function syncY(){Y0=C.y;START=P(Y0+'-07-01');END=P((Y0+1)+'-06-30');inYear=today>=START&&today<=END;clamp=today<START?START:today>END?END:today;mi=(clamp.getFullYear()-Y0)*12+clamp.getMonth()-6;sel=inYear?iso(today):null}
+function applyC(){const tp=C.y+' - '+(C.y+1);
+ $('h1').textContent='Kalender Pendidikan '+C.y+'–'+(C.y+1);$('hp').textContent=C.dinas;document.title='Dashboard Kalender Pendidikan '+C.y+'–'+(C.y+1);
+ $('pt').innerHTML=`<b>${esc(C.dinas.toUpperCase())}</b>KALENDER PENDIDIKAN TAHUN PELAJARAN ${tp}`;
+ $('sgn').innerHTML=`${esc(C.kota)}, ${esc(C.tgl)}<br>${esc(C.jab)}<br><br><br><b>${esc(C.nama)}</b><br>${esc(C.nip)}`;
+ $('ftx').textContent=`Sumber: Kalender Pendidikan TP ${tp}, ditetapkan di ${C.kota}, ${C.tgl}.`;
+ {const F=EF();document.querySelectorAll('[data-ef]').forEach(el=>el.textContent=F[el.dataset.ef])}}
+$('cf').onclick=()=>{FL.forEach(([k])=>$('c_'+k).value=C[k]);$('cer').textContent='';$('cfd').showModal()};
+$('cfc').onclick=()=>$('cfd').close();
+$('cfs').onclick=()=>{const o={...C};FL.forEach(([k])=>{const v=$('c_'+k).value;o[k]=NUM.includes(k)?+v:v.trim()});
+ if(!o.y||o.y<2000||o.y>2100||!o.dinas){$('cer').textContent='Nama dinas dan tahun (2000–2100) wajib diisi dengan benar.';return}
+ const dy=o.y-C.y;
+ if(dy){['a1','b1','a2','b2'].forEach(k=>{if($('c_'+k).value==C[k])o[k]=shiftY(o[k],dy)});E=E.map(e=>({...e,s:shiftY(e.s,dy),e:shiftY(e.e,dy)}));o.ov=Object.fromEntries(Object.entries(C.ov||{}).map(([k,v])=>[shiftY(k,dy),v]));save()}
+ C=o;saveC();syncY();applyC();$('cfd').close();refresh()};
+function resetMonth(i){const m=(i+6)%12,y=i<6?Y0:Y0+1,ms=iso(new Date(y,m,1)),me=iso(new Date(y,m+1,0));
+ E=E.map(e=>{if(e.s>me||e.e<ms)return e;const{c,p,...r}=e;return r});save();refresh()}
+let rmArm=null;
+document.addEventListener('click',ev=>{const b=ev.target.closest('[data-rm]');if(!b)return;const k=b.dataset.rm,i=k=='cur'?mi:+k;
+ b.dataset.t=b.dataset.t||b.textContent;
+ if(rmArm!==k){rmArm=k;b.textContent='Klik lagi: reset';setTimeout(()=>{if(rmArm===k){rmArm=null;b.textContent=b.dataset.t}},3000);return}
+ rmArm=null;b.textContent=b.dataset.t;resetMonth(i)});
+const snap=()=>JSON.stringify({E,C});
+let savedS=snap(),prevS=null;try{prevS=localStorage.getItem(KEY+'-prev')}catch(_){}
+function bar(){$('sst').textContent=dirty?'● Ada perubahan belum disimpan':'✓ Tersimpan';$('sst').style.color=dirty?'var(--libur)':'var(--mut)';
+ $('ssv').disabled=!dirty;$('sbk').disabled=!dirty&&!prevS;$('sbk').textContent=dirty?'↩ Batalkan perubahan':'↩ Versi sebelumnya'}
+function applySnap(s){const o=JSON.parse(s);E=o.E;C={...C0,...o.C};syncY();applyC();refresh()}
+function commit(){try{prevS=savedS;localStorage.setItem(KEY+'-prev',prevS);localStorage.setItem(KEY,JSON.stringify(E));localStorage.setItem(KEY+'-cfg',JSON.stringify(C))}catch(_){}savedS=snap();dirty=false;bar()}
+$('ssv').onclick=commit;
+$('sbk').onclick=()=>{if(dirty){applySnap(savedS);dirty=false;bar()}else if(prevS){const p=prevS;applySnap(p);commit()}};
+addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
+let markMode=false;
+function defEff(s){const d=P(s);if((d.getDay()+6)%7>4)return null;if(!((s>=C.a1&&s<=C.b1)||(s>=C.a2&&s<=C.b2)))return false;return !E.some(e=>(e.t=='libur'||e.t=='nasional')&&e.s<=s&&e.e>=s)}
+function eff(s){const v=defEff(s);if(v===null)return null;const o=(C.ov||{})[s];return o?o=='e':v}
+function toggleNE(s){const v=eff(s);if(v===null)return;const want=!v;C.ov={...(C.ov||{})};if(want===defEff(s))delete C.ov[s];else C.ov[s]=want?'e':'x';save()}
+function EF(){let h=0;const w1=new Set(),w2=new Set();for(let d=new Date(START);d<=END;d.setDate(d.getDate()+1)){const s=iso(d);if(eff(s)===true){h++;const mo=new Date(d);mo.setDate(d.getDate()-(d.getDay()+6)%7);(s<=C.b1?w1:w2).add(iso(mo))}}return{hari:h,s1:w1.size,s2:w2.size,minggu:w1.size+w2.size}}
+function neBox(){const b=$('ne');if(!sel){b.innerHTML='';return}const v=eff(sel);
+ if(v===null){b.innerHTML='<small class="muted">Akhir pekan tidak dihitung sebagai hari efektif.</small>';return}
+ const o=(C.ov||{})[sel];
+ b.innerHTML=`<div>Status: <b style='color:${v?'var(--rapor)':'var(--nas)'}'>${v?'Hari efektif':'Tidak efektif'}</b>${o?' (diubah manual)':''}</div><div class='act' style='margin-top:8px'><button class='ib' id='neb'>${v?'Tandai tidak efektif':'Tandai efektif'}</button>${o?`<button class='ib' id='ner'>Kembalikan otomatis</button>`:''}</div>`;
+ $('neb').onclick=()=>{toggleNE(sel);refresh()};if($('ner'))$('ner').onclick=()=>{C.ov={...C.ov};delete C.ov[sel];save();refresh()}}
+$('mm').onclick=()=>{markMode=!markMode;$('mm').classList.toggle('on',markMode);$('mm').textContent='✎ Mode tandai tidak efektif: '+(markMode?'HIDUP (klik tanggal)':'MATI')};
+applyC();chips();cal();lists();status();if(sel)detail();pdfView();setView("pdf");bar();
+</script></body></html>
