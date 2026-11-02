@@ -264,12 +264,12 @@ $('ssv').onclick=commit;
 $('sbk').onclick=()=>{if(dirty){applySnap(savedS);dirty=false;bar()}else if(prevS){const p=prevS;applySnap(p);commit()}};
 addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
 const SG=document.querySelector('.sg');let markMode=false;const HS=()=>C.hs||5;$('hsq').onchange=()=>{C.hs=+$('hsq').value;save();refresh()};
-function defEff(s){const d=P(s);if((d.getDay()+6)%7>=HS())return null;if(!((s>=C.a1&&s<=C.b1)||(s>=C.a2&&s<=C.b2)))return false;return !E.some(e=>(e.t=='libur'||e.t=='nasional')&&e.s<=s&&e.e>=s)}
+function defEff(s){if(s<iso(START)||s>iso(END))return null;const d=P(s);if((d.getDay()+6)%7>=HS())return null;if(!((s>=C.a1&&s<=C.b1)||(s>=C.a2&&s<=C.b2)))return false;return !E.some(e=>(e.t=='libur'||e.t=='nasional')&&e.s<=s&&e.e>=s)}
 function eff(s){const v=defEff(s);if(v===null)return null;const o=(C.ov||{})[s];return o?o=='e':v}
 function toggleNE(s){const v=eff(s);if(v===null)return;const want=!v;C.ov={...(C.ov||{})};if(want===defEff(s))delete C.ov[s];else C.ov[s]=want?'e':'x';save()}
 function EF(){let h=0;const w1=new Set(),w2=new Set();for(let d=new Date(START);d<=END;d.setDate(d.getDate()+1)){const s=iso(d);if(eff(s)===true){h++;const mo=new Date(d);mo.setDate(d.getDate()-(d.getDay()+6)%7);(s<=C.b1?w1:w2).add(iso(mo))}}return{hari:h,s1:w1.size,s2:w2.size,minggu:w1.size+w2.size}}
 function neBox(){const b=$('ne');if(!sel){b.innerHTML='';return}const v=eff(sel);
- if(v===null){b.innerHTML='<small class="muted">Akhir pekan tidak dihitung sebagai hari efektif.</small>';return}
+ if(v===null){b.innerHTML='<small class="muted">Tanggal ini tidak dihitung sebagai hari efektif (akhir pekan atau di luar tahun pelajaran).</small>';return}
  const o=(C.ov||{})[sel];
  b.innerHTML=`<div>Status: <b style='color:${v?'var(--rapor)':'var(--nas)'}'>${v?'Hari efektif':'Tidak efektif'}</b>${o?' (diubah manual)':''}</div><div class='act' style='margin-top:8px'><button class='ib' id='neb'>${v?'Tandai tidak efektif':'Tandai efektif'}</button>${o?`<button class='ib' id='ner'>Kembalikan otomatis</button>`:''}</div>`;
  $('neb').onclick=()=>{toggleNE(sel);refresh()};if($('ner'))$('ner').onclick=()=>{C.ov={...C.ov};delete C.ov[sel];save();refresh()}}
