@@ -62,7 +62,7 @@ dialog label{display:block;font-size:.8rem;color:var(--mut);margin-top:10px}dial
 .mo th.a{background:#e00;color:#fff}.mo th.b{background:#777;color:#fff}.mo td.a{background:#e00;color:#fff;font-weight:700}.mo td.b{background:#777;color:#fff;font-weight:700}.mo td.x{text-decoration:none}
 .lg{font-size:.72rem;display:flex;gap:5px;padding:1px 0;min-height:16px;border-bottom:1px solid #bbb}.lg b{min-width:42px;text-align:center;border:1px solid #222}
 .sg{display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;background:#fff;color:#111;padding:12px;margin-top:14px;font-size:.85rem}.sg table{border-collapse:collapse}.sg td{border:1px solid #222;padding:2px 8px}
-@media(max-width:1000px){.py{grid-template-columns:1fr 1fr}}@media(max-width:640px){.py{grid-template-columns:1fr}}
+.py .sg{grid-column:span 2;margin-top:0}@media(max-width:1000px){.py{grid-template-columns:1fr 1fr}}@media(max-width:640px){.py{grid-template-columns:1fr}.py .sg{grid-column:auto}}
 @media print{@page{size:8.5in 14in;margin:7mm}*{-webkit-print-color-adjust:exact;print-color-adjust:exact}:root{padding:0!important}html,body{background:#fff!important;height:auto}.w{max-width:none;padding:0}header,.ft,.w>section:not(#pdfv){display:none!important}#pdfv{display:block!important}.pt{margin-bottom:6px;padding:4px;font-size:9pt}.pt img{width:13mm;height:13mm}.pt::after{width:13mm}.pt b{font-size:11pt}.py{grid-template-columns:repeat(3,1fr)!important;gap:6px 8px}.mo{break-inside:avoid}.mo h4{font-size:8pt}.mo table{font-size:7pt}.mo th,.mo td{height:4.6mm;padding:0 2px}.lg{font-size:6pt;min-height:3.2mm;padding:0}.lg b{min-width:9mm}.sg{margin-top:8px;padding:4px;font-size:8pt;break-inside:avoid}}
 </style></head><body><div class="w">
 <header><div><h1 id="h1">Kalender Pendidikan 2025–2026</h1><p id="hp">Dinas Pendidikan dan Kebudayaan Kota Parepare</p></div>
@@ -141,11 +141,11 @@ const days=(a,b)=>Math.round((b-a)/864e5);
 
 function chips(){$("chips").innerHTML=Object.keys(T).map(k=>`<button class="chip ${off.has(k)?"off":""}" data-k="${k}"><i style="background:${col(k)}"></i>${T[k][0]}</button>`).join("");
  $("chips").querySelectorAll("button").forEach(b=>b.onclick=()=>{off.has(b.dataset.k)?off.delete(b.dataset.k):off.add(b.dataset.k);chips();cal();lists()})}
-function tabs(){$("mt").innerHTML=Array.from({length:12},(_,i)=>{const m=(i+6)%12,y=i<6?Y0:Y0+1;return `<button class="${i==mi?"on":""}" data-i="${i}">${MS[m]} ${String(y).slice(2)}</button>`}).join("");
+function tabs(){$("mt").innerHTML=Array.from({length:13},(_,i)=>{const m=(i+6)%12,y=i<6?Y0:Y0+1;return `<button class="${i==mi?"on":""}" data-i="${i}">${MS[m]} ${String(y).slice(2)}</button>`}).join("");
  $("mt").querySelectorAll("button").forEach(b=>b.onclick=()=>{mi=+b.dataset.i;cal()})}
 function cal(){
  const m=(mi+6)%12,y=mi<6?Y0:Y0+1;$("mn").textContent=MN[m]+" "+y;tabs();
- $("pv").disabled=mi==0;$("nx").disabled=mi==11;
+ $("pv").disabled=mi==0;$("nx").disabled=mi==12;
  let h=["Sen","Sel","Rab","Kam","Jum","Sab","Ahad"].map((d,i)=>`<div class="dh ${i==6?"s":""}">${d}</div>`).join("");
  const first=(new Date(y,m,1).getDay()+6)%7,n=new Date(y,m+1,0).getDate();
  for(let i=0;i<first;i++)h+=`<div class="d e"></div>`;
@@ -176,11 +176,11 @@ function status(){
  $("prog").innerHTML=`<div class="row"><span>Keseluruhan</span><b>${pc}%</b></div><div class="bar"><i style="width:${pc}%"></i></div>
  <div class="row"><span>Semester I (${fm(C.a1)} – ${fm(C.b1)})</span><b>${f(s1[0],s1[1])}%</b></div><div class="bar"><i style="width:${f(s1[0],s1[1])}%"></i></div>
  <div class="row"><span>Semester II (${fm(C.a2)} – ${fm(C.b2)})</span><b>${f(s2[0],s2[1])}%</b></div><div class="bar"><i style="width:${f(s2[0],s2[1])}%"></i></div>`}
-$("pv").onclick=()=>{if(mi>0){mi--;cal()}};$("nx").onclick=()=>{if(mi<11){mi++;cal()}};
+$("pv").onclick=()=>{if(mi>0){mi--;cal()}};$("nx").onclick=()=>{if(mi<12){mi++;cal()}};
 $("th").onclick=()=>{const r=document.documentElement,d=getComputedStyle(r).getPropertyValue("--bg").trim()=="#0e1424";r.dataset.theme=d?"light":"dark"};
 const TC={nasional:"#dc2626",libur:"#facc15",ujian:"#60a5fa",kegiatan:"#c4b5fd",rapor:"#fb923c"},PR=["nasional","libur","ujian","rapor","kegiatan"];
 function pdfView(){let h="";
- for(let i=0;i<12;i++){const m=(i+6)%12,y=i<6?Y0:Y0+1,fd=new Date(y,m,1).getDay(),n=new Date(y,m+1,0).getDate();
+ for(let i=0;i<13;i++){const m=(i+6)%12,y=i<6?Y0:Y0+1,fd=new Date(y,m,1).getDay(),n=new Date(y,m+1,0).getDate();
   const rows=["Ahad","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"].map((nm,r)=>{let c=`<th class="${r==0?"a":r==6&&HS()==5?"b":""}">${nm}</th>`;
    for(let w=0;w<5;w++){let d=w*7+r-fd+1,t=String(d);if(d<1||d>n){c+="<td></td>";continue}if(w==4&&d+7<=n)t=d+"/"+(d+7)
     ;
@@ -192,7 +192,7 @@ function pdfView(){let h="";
   const ms=iso(new Date(y,m,1)),me=iso(new Date(y,m,n));
   const lg=E.filter(e=>e.s<=me&&e.e>=ms).sort((a,b)=>a.s<b.s?-1:1).map(e=>{const a=P(e.s<ms?ms:e.s).getDate(),b=P(e.e>me?me:e.e).getDate();return `<div class="lg" data-id="${e.id}"><b style="${sw(e)}">${a==b?a:a+"-"+b}</b>: ${e.n}</div>`}).join("");
   h+=`<div class="mo"><h4>${MN[m].toUpperCase()} ${y}<button class='rm' data-rm='${i}' title='Kembalikan warna agenda bulan ini ke normal'>↺ warna</button></h4><table><thead><tr><th>Hari</th><th>I</th><th>II</th><th>III</th><th>IV</th><th>V</th></tr></thead><tbody>${rows}</tbody></table>${lg}</div>`}
- $("py").innerHTML=h}
+ $("py").innerHTML=h;$("py").appendChild(SG)}
 function setView(v){document.querySelectorAll(".w>section:not(#pdfv)").forEach(s=>s.hidden=v=="pdf");$("pdfv").hidden=v!="pdf"}
 $("vp").onclick=()=>setView("pdf");$("vd").onclick=()=>setView("dash");$("pr").onclick=()=>{setView("pdf");window.print()};
 const PT={solid:['Polos',''],diag:['Miring ╱','repeating-linear-gradient(45deg,rgba(0,0,0,.4) 0 1px,transparent 1px 4px)'],back:['Miring ╲','repeating-linear-gradient(-45deg,rgba(0,0,0,.4) 0 1px,transparent 1px 4px)'],horiz:['Mendatar','repeating-linear-gradient(0deg,rgba(0,0,0,.4) 0 1px,transparent 1px 4px)'],vert:['Tegak','repeating-linear-gradient(90deg,rgba(0,0,0,.4) 0 1px,transparent 1px 4px)'],cross:['Silang','repeating-linear-gradient(45deg,rgba(0,0,0,.4) 0 1px,transparent 1px 4px),repeating-linear-gradient(-45deg,rgba(0,0,0,.4) 0 1px,transparent 1px 4px)'],dots:['Titik','radial-gradient(rgba(0,0,0,.5) 1px,transparent 1.5px)']};
@@ -263,7 +263,7 @@ function commit(){try{prevS=savedS;localStorage.setItem(KEY+'-prev',prevS);local
 $('ssv').onclick=commit;
 $('sbk').onclick=()=>{if(dirty){applySnap(savedS);dirty=false;bar()}else if(prevS){const p=prevS;applySnap(p);commit()}};
 addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
-let markMode=false;const HS=()=>C.hs||5;$('hsq').onchange=()=>{C.hs=+$('hsq').value;save();refresh()};
+const SG=document.querySelector('.sg');let markMode=false;const HS=()=>C.hs||5;$('hsq').onchange=()=>{C.hs=+$('hsq').value;save();refresh()};
 function defEff(s){const d=P(s);if((d.getDay()+6)%7>=HS())return null;if(!((s>=C.a1&&s<=C.b1)||(s>=C.a2&&s<=C.b2)))return false;return !E.some(e=>(e.t=='libur'||e.t=='nasional')&&e.s<=s&&e.e>=s)}
 function eff(s){const v=defEff(s);if(v===null)return null;const o=(C.ov||{})[s];return o?o=='e':v}
 function toggleNE(s){const v=eff(s);if(v===null)return;const want=!v;C.ov={...(C.ov||{})};if(want===defEff(s))delete C.ov[s];else C.ov[s]=want?'e':'x';save()}
