@@ -56,7 +56,7 @@ dialog label{display:block;font-size:.8rem;color:var(--mut);margin-top:10px}dial
 .g2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.sw{display:flex;gap:6px;flex-wrap:wrap;align-items:center}.sw button[data-c]{width:22px;height:22px;border-radius:50%;border:2px solid #fff6;padding:0}
 .pg{display:grid;grid-template-columns:repeat(4,1fr);gap:6px;margin-top:4px}.pg button{border:2px solid var(--bd);background:transparent;border-radius:8px;padding:4px;font-size:.68rem;color:var(--tx)}.pg button.on{border-color:var(--pri)}.pg span{display:block;height:22px;border-radius:4px;border:1px solid #0004;margin-bottom:2px}
 .eb{border:0;background:transparent;color:var(--mut);padding:0 4px;font-size:.95rem}.lg[data-id]{cursor:pointer}.lg[data-id]:hover{background:#eee}
-.act{display:flex;gap:8px;margin-top:16px}.act .sp{flex:1}.bad{color:var(--nas)}.cg{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}.cg .f{grid-column:1/-1}.mo h4{position:relative}.rm{position:absolute;right:3px;top:50%;transform:translateY(-50%);font-size:.65rem;padding:0 5px;border:1px solid #555;border-radius:6px;background:#fff;color:#111;cursor:pointer}#sb{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:8px 12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;box-shadow:0 6px 24px #0003;z-index:20;font-size:.85rem;max-width:94vw}#sb .ib:disabled{opacity:.4;cursor:default}.neb{position:absolute;top:3px;right:5px;font-size:.6rem;color:var(--nas);font-weight:700}.mm.on{background:var(--pri);color:#fff}@media print{.eb,.rm,#sb{display:none!important}}
+.act{display:flex;gap:8px;margin-top:16px}.act .sp{flex:1}.bad{color:var(--nas)}.cg{display:grid;grid-template-columns:1fr 1fr;gap:0 10px}.cg .f{grid-column:1/-1}.mo h4{position:relative}.rm{position:absolute;right:3px;top:50%;transform:translateY(-50%);font-size:.65rem;padding:0 5px;border:1px solid #555;border-radius:6px;background:#fff;color:#111;cursor:pointer}#sb{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(12px + env(safe-area-inset-bottom,0px));background:var(--card);border:1px solid var(--bd);border-radius:14px;padding:8px 12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;box-shadow:0 6px 24px #0003;z-index:20;font-size:.85rem;max-width:94vw}#sb .ib:disabled{opacity:.4;cursor:default}.neb{position:absolute;top:3px;right:5px;font-size:.6rem;color:var(--nas);font-weight:700}.mm.on{background:var(--pri);color:#fff}.nn{position:absolute;bottom:3px;right:5px;font-size:.65rem}.d{user-select:none}.d.rg{outline:3px dashed var(--pri);outline-offset:-3px}@media print{.eb,.rm,#sb{display:none!important}}
 .mo{background:#fff;color:#111}.mo h4{margin:0;text-align:center;background:#d9d2e9;border:2px solid #111;border-bottom:0;font-size:.85rem;padding:2px}
 .mo table{width:100%;border-collapse:collapse;font-size:.78rem}.mo th,.mo td{border:1px solid #222;padding:1px 3px;text-align:center;height:19px}.mo th{text-align:left;font-weight:700;width:17%}.mo thead th{text-align:center;background:#d9d2e9}
 .mo th.a{background:#e00;color:#fff}.mo th.b{background:#777;color:#fff}.mo td.a{background:#e00;color:#fff;font-weight:700}.mo td.b{background:#777;color:#fff;font-weight:700}.mo td.x{text-decoration:none}
@@ -76,7 +76,7 @@ dialog label{display:block;font-size:.8rem;color:var(--mut);margin-top:10px}dial
 <div class="card"><h3>Status hari ini</h3><div id="now"></div></div>
 <div class="card"><h3>Progres tahun pelajaran</h3><div id="prog"></div></div></section>
 <section class="main">
-<div class="card"><div class="chips" id="chips"></div><div class="mt" id="mt"></div><div style="margin-bottom:8px"><button class="ib" data-rm="cur" style="font-size:.8rem;padding:3px 10px">↺ Reset warna agenda bulan ini</button> <button class="ib mm" id="mm" style="font-size:.8rem;padding:3px 10px">✎ Mode tandai tidak efektif: MATI</button></div>
+<div class="card"><div class="chips" id="chips"></div><div class="mt" id="mt"></div><div style="margin-bottom:8px"><button class="ib" data-rm="cur" style="font-size:.8rem;padding:3px 10px">↺ Reset warna agenda bulan ini</button> <button class="ib mm" id="mm" style="font-size:.8rem;padding:3px 10px">✎ Mode tandai tidak efektif: MATI</button> <button class="ib mm" id="bm" style="font-size:.8rem;padding:3px 10px">▦ Mode blok tanggal: MATI</button></div>
 <div class="nav"><button class="ib" id="pv">←</button><h2 id="mn"></h2><button class="ib" id="nx">→</button></div>
 <div class="cal" id="cal"></div></div>
 <div class="side"><div class="card det"><h3 id="dt">Detail tanggal</h3><div id="dd" class="muted">Pilih tanggal pada kalender.</div><div id="ne" style="margin-top:10px"></div></div>
@@ -151,12 +151,12 @@ function cal(){
  for(let i=0;i<first;i++)h+=`<div class="d e"></div>`;
  for(let d=1;d<=n;d++){const dt=new Date(y,m,d),s=iso(dt),ev=evOn(s).filter(on),wd=(dt.getDay()+6)%7;if(wd>=HS())ev.length=0;
   const pr=["nasional","libur","ujian","rapor","kegiatan"],top=pr.map(t=>ev.find(e=>e.t==t)).find(Boolean);
-  const dq=(C.dc||{})[s],bg=dq?`background:color-mix(in srgb,${dq.c} 32%,transparent);${patcss(dq.p)}`:top?`background:color-mix(in srgb,${ecol(top)} 16%,transparent)`:"";
-  h+=`<button class="d ${wd==6?"sun":""} ${top?"bg":""} ${s==sel?"sel":""} ${s==iso(today)?"td":""}" data-s="${s}" style="${bg}"><span>${d}</span>${eff(s)===false?`<small class="neb">${(C.ov||{})[s]?"✎ ":""}TE</small>`:""}<div class="dots">${ev.map(e=>`<i style="background:${ecol(e)}"></i>`).join("")}</div></button>`}
+  const dq=(C.dc||{})[s],bg=dq?`background:color-mix(in srgb,${dq.c} 32%,transparent);${patcss(dq.p)}`:top?`background:color-mix(in srgb,${ecol(top)} ${top.p&&top.p!='solid'?30:16}%,transparent);${patcss(top.p)}`:"";
+  h+=`<button class="d ${wd==6?"sun":""} ${top?"bg":""} ${s==sel?"sel":""} ${inR(s)?"rg":""} ${s==iso(today)?"td":""}" data-s="${s}" style="${bg}"><span>${d}</span>${eff(s)===false?`<small class="neb">${(C.ov||{})[s]?"✎ ":""}TE</small>`:""}${(C.nt||{})[s]?`<small class="nn">📝</small>`:""}<div class="dots">${ev.map(e=>`<i style="background:${ecol(e)}"></i>`).join("")}</div></button>`}
  $("cal").innerHTML=h;
- $("cal").querySelectorAll("button.d").forEach(b=>b.onclick=()=>{sel=b.dataset.s;if(markMode){toggleNE(sel);refresh()}else cal();detail();if(innerWidth<=820&&!markMode)$('dt').scrollIntoView({behavior:'smooth',block:'center'})});detail()}
+ $("cal").querySelectorAll("button.d").forEach(b=>b.onclick=ev=>cellClick(ev,b.dataset.s));detail()}
 function item(e,extra){return `<div class="it"><i style="${sw(e)}"></i><div>${e.n}<small>${rng(e)} · ${T[e.t][0]}</small></div>${extra?`<em>${extra}</em>`:""}<button class="eb" data-id="${e.id}" title="Edit agenda">✎</button></div>`}
-function detail(){neBox();if(!sel){return}const d=P(sel),ev=evOn(sel);
+function detail(){if(rs&&re&&rs!==re){if(!live)blockBox();return}neBox();if(!sel){return}const d=P(sel),ev=evOn(sel);
  $("dt").textContent=["Ahad","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"][d.getDay()]+", "+fm(sel);
  const wk=d.getDay()==0||d.getDay()==6;
  $("dd").innerHTML=ev.length?ev.map(e=>item(e)).join(""):`<span class="muted">${wk?"Akhir pekan, tidak ada agenda.":"Hari belajar biasa, tidak ada agenda khusus."}</span>`}
@@ -190,11 +190,11 @@ function pdfView(){let h="";
     c+=`<td class="${r==0?"a":r==6&&HS()==5?"b":""}${x}"${st}>${t}</td>`}
    return `<tr>${c}</tr>`}).join("");
   const ms=iso(new Date(y,m,1)),me=iso(new Date(y,m,n));
-  const lg=E.filter(e=>e.s<=me&&e.e>=ms).sort((a,b)=>a.s<b.s?-1:1).map(e=>{const a=P(e.s<ms?ms:e.s).getDate(),b=P(e.e>me?me:e.e).getDate();return `<div class="lg" data-id="${e.id}"><b style="${sw(e)}">${a==b?a:a+"-"+b}</b>: ${e.n}</div>`}).join("");
-  h+=`<div class="mo"><h4>${MN[m].toUpperCase()} ${y}<button class='rm' data-rm='${i}' title='Kembalikan warna agenda bulan ini ke normal'>↺ warna</button></h4><table><thead><tr><th>Hari</th><th>I</th><th>II</th><th>III</th><th>IV</th><th>V</th></tr></thead><tbody>${rows}</tbody></table>${lg}</div>`}
+  const nts=Object.keys(C.nt||{}).filter(k=>k>=ms&&k<=me&&C.nt[k]).sort().map(k=>{const dq=(C.dc||{})[k],ev=evOn(k),wd=new Date(k+'T00:00:00').getDay(),tp=PR.map(p=>ev.find(e=>e.t==p)).find(Boolean),sc=dq||(wd>0&&wd<=HS()?tp:null);return `<div class="lg"><b style="${sc?sw(sc)+';color:'+ink(ecol(sc)):''}">${+k.slice(8)}</b>: ${esc(C.nt[k])}</div>`}).join("");const lg=E.filter(e=>e.s<=me&&e.e>=ms).sort((a,b)=>a.s<b.s?-1:1).map(e=>{const a=P(e.s<ms?ms:e.s).getDate(),b=P(e.e>me?me:e.e).getDate();return `<div class="lg" data-id="${e.id}"><b style="${sw(e)}">${a==b?a:a+"-"+b}</b>: ${e.n}</div>`}).join("");
+  h+=`<div class="mo"><h4>${MN[m].toUpperCase()} ${y}<button class='rm' data-rm='${i}' title='Kembalikan warna agenda bulan ini ke normal'>↺ warna</button></h4><table><thead><tr><th>Hari</th><th>I</th><th>II</th><th>III</th><th>IV</th><th>V</th></tr></thead><tbody>${rows}</tbody></table>${lg}${nts}</div>`}
  $("py").innerHTML=h;$("py").appendChild(SG)}
 function setView(v){document.querySelectorAll(".w>section:not(#pdfv)").forEach(s=>s.hidden=v=="pdf");$("pdfv").hidden=v!="pdf"}
-$("vp").onclick=()=>setView("pdf");$("vd").onclick=()=>setView("dash");$("pr").onclick=()=>{setView("pdf");window.print()};
+$("vp").onclick=()=>{pdfView();setView("pdf")};$("vd").onclick=()=>setView("dash");$("pr").onclick=()=>{setView("pdf");window.print()};
 const PT={solid:['Polos',''],diag:['Miring ╱','repeating-linear-gradient(45deg,rgba(0,0,0,.4) 0 1px,transparent 1px 4px)'],back:['Miring ╲','repeating-linear-gradient(-45deg,rgba(0,0,0,.4) 0 1px,transparent 1px 4px)'],horiz:['Mendatar','repeating-linear-gradient(0deg,rgba(0,0,0,.4) 0 1px,transparent 1px 4px)'],vert:['Tegak','repeating-linear-gradient(90deg,rgba(0,0,0,.4) 0 1px,transparent 1px 4px)'],cross:['Silang','repeating-linear-gradient(45deg,rgba(0,0,0,.4) 0 1px,transparent 1px 4px),repeating-linear-gradient(-45deg,rgba(0,0,0,.4) 0 1px,transparent 1px 4px)'],dots:['Titik','radial-gradient(rgba(0,0,0,.5) 1px,transparent 1.5px)']};
 const ecol=e=>e.c||TC[e.t];
 const patcss=p=>!p||p=='solid'||!PT[p]?'':`background-image:${PT[p][1]};`+(p=='dots'?'background-size:4px 4px;':'');
@@ -245,7 +245,7 @@ $('cfc').onclick=()=>$('cfd').close();
 $('cfs').onclick=()=>{const o={...C};FL.forEach(([k])=>{const v=$('c_'+k).value;o[k]=NUM.includes(k)?+v:v.trim()});
  if(!o.y||o.y<2000||o.y>2100||!o.dinas){$('cer').textContent='Nama dinas dan tahun (2000–2100) wajib diisi dengan benar.';return}
  const dy=o.y-C.y;if(logoTmp===null)delete o.logo;else if(logoTmp)o.logo=logoTmp;
- if(dy){['a1','b1','a2','b2'].forEach(k=>{if($('c_'+k).value==C[k])o[k]=shiftY(o[k],dy)});E=E.map(e=>({...e,s:shiftY(e.s,dy),e:shiftY(e.e,dy)}));o.ov=Object.fromEntries(Object.entries(C.ov||{}).map(([k,v])=>[shiftY(k,dy),v]));o.dc=Object.fromEntries(Object.entries(C.dc||{}).map(([k,v])=>[shiftY(k,dy),v]));save()}
+ if(dy){['a1','b1','a2','b2'].forEach(k=>{if($('c_'+k).value==C[k])o[k]=shiftY(o[k],dy)});E=E.map(e=>({...e,s:shiftY(e.s,dy),e:shiftY(e.e,dy)}));o.ov=Object.fromEntries(Object.entries(C.ov||{}).map(([k,v])=>[shiftY(k,dy),v]));o.dc=Object.fromEntries(Object.entries(C.dc||{}).map(([k,v])=>[shiftY(k,dy),v]));o.nt=Object.fromEntries(Object.entries(C.nt||{}).map(([k,v])=>[shiftY(k,dy),v]));save()}
  C=o;saveC();syncY();applyC();$('cfd').close();refresh()};
 function resetMonth(i){const m=(i+6)%12,y=i<6?Y0:Y0+1,ms=iso(new Date(y,m,1)),me=iso(new Date(y,m+1,0));
  E=E.map(e=>{if(e.s>me||e.e<ms)return e;const{c,p,...r}=e;return r});if(C.dc){C.dc={...C.dc};Object.keys(C.dc).forEach(k=>{if(k>=ms&&k<=me)delete C.dc[k]})}save();refresh()}
@@ -266,12 +266,44 @@ addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue='
 const PAL=['#dc2626','#f97316','#facc15','#22c55e','#14b8a6','#60a5fa','#2563eb','#a78bfa','#ec4899','#9ca3af'];
 function setDc(c,p){C.dc={...(C.dc||{})};const u=C.dc[sel]||{c:'#60a5fa',p:'solid'};C.dc[sel]={c:c||u.c,p:p||u.p};save();refresh()}
 function dayX(){const q=(C.dc||{})[sel],cc=q?q.c:'#60a5fa';
+ $('ne').insertAdjacentHTML('afterbegin',`<label style='display:block;font-size:.8rem;color:var(--mut)'>Keterangan tanggal<textarea id='nt' rows='3' placeholder='Tulis keterangan untuk tanggal ini…' style='width:100%;font:inherit;padding:7px 9px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);margin:4px 0 10px;resize:vertical'></textarea></label>`);
+ $('nt').value=(C.nt||{})[sel]||'';
+ $('nt').oninput=()=>{C.nt={...(C.nt||{})};const v=$('nt').value;if(v.trim())C.nt[sel]=v;else delete C.nt[sel];save();
+  const cell=document.querySelector(`#cal [data-s='${sel}']`);if(cell){let n=cell.querySelector('.nn');if(v.trim()){if(!n){n=document.createElement('small');n.className='nn';n.textContent='📝';cell.appendChild(n)}}else if(n)n.remove()}};
  $('ne').insertAdjacentHTML('beforeend',`<div style='margin-top:12px;font-size:.8rem;color:var(--mut)'>Warna tanggal ini</div><div class='sw' id='dcp' style='margin-top:4px'>${PAL.map(c=>`<button data-c='${c}' style='background:${c}${q&&q.c==c?';outline:2px solid var(--pri)':''}'></button>`).join('')}<input type='color' id='dcc' value='${cc}'></div><div class='pg' id='dpp' style='margin-top:8px'>${Object.keys(PT).map(k=>`<button data-p='${k}' class='${q&&(q.p||'solid')==k?'on':''}'><span style='background-color:${cc};${patcss(k)}'></span>${PT[k][0]}</button>`).join('')}</div><div class='act' style='margin-top:8px'><button class='ib' id='dca'>＋ Agenda di tanggal ini</button>${q?`<button class='ib' id='dcr'>Hapus warna</button>`:''}</div>`);
  $('dcp').querySelectorAll('button').forEach(x=>x.onclick=()=>setDc(x.dataset.c,null));
  $('dcc').onchange=()=>setDc($('dcc').value,null);
  $('dpp').querySelectorAll('button').forEach(x=>x.onclick=()=>setDc(null,x.dataset.p));
  $('dca').onclick=()=>openEd(null);
  if($('dcr'))$('dcr').onclick=()=>{C.dc={...C.dc};delete C.dc[sel];save();refresh()}}
+let rs=null,re=null,drag=null,noClick=false,blkMode=false,bs=null,bc=null,bp='solid';
+const inR=s=>rs&&re&&s>=rs&&s<=re;
+const TAS='width:100%;font:inherit;padding:7px 9px;border:1px solid var(--bd);border-radius:8px;background:var(--bg);color:var(--tx);margin:4px 0 10px;resize:vertical';
+function setRange(a,b){bdFinish();if(a===b){rs=re=null;sel=a;cal();return}const r=a<=b?[a,b]:[b,a];rs=r[0];re=r[1];sel=rs;cal()}
+function cellClick(ev,s){if(noClick){noClick=false;return}bdFinish();
+ if(ev.shiftKey&&sel){setRange(sel,s);return}
+ if(blkMode){if(!bs){bs=s;sel=s;rs=re=null;cal();return}const a=bs;bs=null;setRange(a,s);return}
+ rs=re=null;sel=s;if(markMode){toggleNE(sel);refresh()}else cal();
+ detail();if(innerWidth<=820&&!markMode)$('dt').scrollIntoView({behavior:'smooth',block:'center'})}
+$('cal').addEventListener('mousedown',ev=>{const c=ev.target.closest('button.d');if(!c||ev.shiftKey||ev.button!==0||blkMode)return;drag={a:c.dataset.s,moved:false}});
+$('cal').addEventListener('mouseover',ev=>{if(!drag)return;const c=ev.target.closest('button.d');if(!c)return;const s=c.dataset.s;if(s!==drag.a)drag.moved=true;if(!drag.moved)return;const x=drag.a<=s?drag.a:s,y=drag.a<=s?s:drag.a;rs=x;re=y;document.querySelectorAll('#cal button.d').forEach(b=>b.classList.toggle('rg',b.dataset.s>=x&&b.dataset.s<=y))});
+document.addEventListener('mouseup',()=>{if(!drag)return;const d=drag;drag=null;if(d.moved&&rs&&re&&rs!==re){noClick=true;setTimeout(()=>{noClick=false},60);setRange(rs,re)}});
+$('bm').onclick=()=>{blkMode=!blkMode;bs=null;$('bm').classList.toggle('on',blkMode);$('bm').textContent='▦ Mode blok tanggal: '+(blkMode?'HIDUP (ketuk tanggal awal, lalu akhir)':'MATI')};
+function bpats(){const c=bc||TC[$('bt').value];$('bpp').innerHTML=Object.keys(PT).map(k=>`<button data-p='${k}' class='${k==bp?'on':''}'><span style='background-color:${c};${patcss(k)}'></span>${PT[k][0]}</button>`).join('');$('bpp').querySelectorAll('button').forEach(x=>x.onclick=()=>{bp=x.dataset.p;bpats();bdSave()})}
+function setBlockEff(v){C.ov={...(C.ov||{})};for(let d=P(rs);d<=P(re);d.setDate(d.getDate()+1)){const s=iso(d),df=defEff(s);if(df===null)continue;if(v===df)delete C.ov[s];else C.ov[s]=v?'e':'x'}save();sel=rs;rs=re=null;refresh()}
+let ba,bb,bd=null,live=false;
+function bdFinish(){if(bd){const e=E.find(x=>x.id==bd);if(e&&e.n==='(tanpa keterangan)')E=E.filter(x=>x.id!=bd);bd=null}}
+function bdSave(){const o={s:ba,e:bb,t:$('bt').value,n:$('bk').value.trim()||'(tanpa keterangan)',c:bc||undefined,p:bp=='solid'?undefined:bp};
+ if(bd){const i=E.findIndex(x=>x.id==bd);E[i]={...o,id:bd}}else{bd='u'+Date.now();E.push({...o,id:bd})}
+ save();live=true;try{cal();pdfView();lists();applyC()}finally{live=false}}
+function blockBox(){const a=rs,b=re,n=days(P(a),P(b))+1;bc=null;bp='solid';bd=null;ba=a;bb=b;
+ $('dt').textContent='Blok: '+fm(a)+' – '+fm(b)+' ('+n+' hari)';$('ne').innerHTML='';$('dd').className='';
+ $('dd').innerHTML=`<label style='display:block;font-size:.8rem;color:var(--mut)'>Keterangan blok tanggal<textarea id='bk' rows='3' placeholder='Contoh: Libur Ramadhan, Ujian Sekolah…' style='${TAS}'></textarea></label><label style='display:block;font-size:.8rem;color:var(--mut)'>Kategori<select id='bt' class='ib' style='width:100%;margin:4px 0 8px'>${Object.keys(T).map(k=>`<option value='${k}'${k=='kegiatan'?' selected':''}>${T[k][0]}</option>`).join('')}</select></label><div style='font-size:.8rem;color:var(--mut)'>Warna & arsir</div><div class='sw' id='bcp' style='margin-top:4px'>${PAL.map(c=>`<button data-c='${c}' style='background:${c}'></button>`).join('')}<input type='color' id='bcc' value='#60a5fa'></div><div class='pg' id='bpp' style='margin-top:8px'></div><div id='ber' class='bad' style='font-size:.8rem;margin-top:6px'></div><div class='act' style='flex-wrap:wrap;margin-top:8px'><button class='ib' id='bne'>Tandai tidak efektif</button><button class='ib' id='bef'>Tandai efektif</button></div><div class='act' style='margin-top:8px'><button class='ib' id='bcn'>Batalkan blok</button><span class='sp'></span><button class='ib' id='bok' style='background:var(--pri);color:#fff;border-color:var(--pri)'>Terapkan</button></div>`;
+ $('bcp').querySelectorAll('button').forEach(x=>x.onclick=()=>{bc=x.dataset.c;$('bcc').value=bc;$('bcp').querySelectorAll('button').forEach(y=>y.style.outline=y===x?'2px solid var(--pri)':'');bpats();bdSave()});
+ $('bcc').oninput=()=>{bc=$('bcc').value;$('bcp').querySelectorAll('button').forEach(y=>y.style.outline='');bpats();bdSave()};$('bt').onchange=()=>{bpats();bdSave()};$('bk').oninput=()=>bdSave();bpats();
+ $('bcn').onclick=()=>{if(bd){E=E.filter(x=>x.id!=bd);bd=null;save()}rs=re=null;refresh()};$('bne').onclick=()=>setBlockEff(false);$('bef').onclick=()=>setBlockEff(true);
+ $('bok').onclick=()=>{const t=$('bk').value.trim();if(!t){$('ber').textContent='Tulis keterangan terlebih dahulu.';return}
+  bdSave();bd=null;rs=re=null;sel=a;refresh()}}
 const SG=document.querySelector('.sg');let markMode=false;const HS=()=>C.hs||5;$('hsq').onchange=()=>{C.hs=+$('hsq').value;save();refresh()};
 function defEff(s){if(s<iso(START)||s>iso(END))return null;const d=P(s);if((d.getDay()+6)%7>=HS())return null;if(!((s>=C.a1&&s<=C.b1)||(s>=C.a2&&s<=C.b2)))return false;return !E.some(e=>(e.t=='libur'||e.t=='nasional')&&e.s<=s&&e.e>=s)}
 function eff(s){const v=defEff(s);if(v===null)return null;const o=(C.ov||{})[s];return o?o=='e':v}
