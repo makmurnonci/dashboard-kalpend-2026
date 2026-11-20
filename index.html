@@ -41,14 +41,14 @@ button{font:inherit;color:inherit;cursor:pointer}
 .dots{display:flex;gap:3px;flex-wrap:wrap}.dots i{width:7px;height:7px;border-radius:50%}
 .d.bg{border-color:transparent}
 .side{display:flex;flex-direction:column;gap:12px}
-.det{min-height:70px}.det .it{margin-top:6px}
+.det{min-height:70px;position:sticky;top:10px;z-index:5;max-height:calc(100vh - 20px);overflow:auto}.det .it{margin-top:6px}
 .it{display:flex;gap:9px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--bd);font-size:.87rem}
 .it:last-child{border:0}.it i{width:10px;height:10px;border-radius:50%;margin-top:6px;flex:none}
 .it small{display:block;color:var(--mut);font-size:.76rem}.it em{margin-left:auto;font-style:normal;font-size:.75rem;color:var(--mut);white-space:nowrap}
 .list{max-height:360px;overflow-y:auto}
 .muted{color:var(--mut)}
 .ft{margin-top:16px;font-size:.76rem;color:var(--mut);text-align:center}
-@media(max-width:820px){.hero,.main{grid-template-columns:1fr}.d{min-height:40px}}
+@media(max-width:820px){.hero,.main{grid-template-columns:1fr}.d{min-height:40px}.det{position:static;max-height:none}}
 .pt{display:flex;align-items:center;gap:12px;border:2px solid #111;background:#dbeaf3;color:#111;padding:8px 12px;margin-bottom:12px;border-radius:4px}.pt img{width:64px;height:64px;object-fit:contain}.pt::after{content:'';width:64px}.pt .kt{flex:1;text-align:center}.pt .kt span{display:block;font-size:.85rem}.pt .kt span:first-child{font-weight:600;letter-spacing:.04em;font-size:.95rem}.pt .kt b{display:block;font-size:1.15rem}
 .py{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
 dialog{border:1px solid var(--bd);border-radius:14px;background:var(--card);color:var(--tx);padding:18px;width:min(440px,92vw)}dialog::backdrop{background:rgba(0,0,0,.45)}
@@ -151,10 +151,10 @@ function cal(){
  for(let i=0;i<first;i++)h+=`<div class="d e"></div>`;
  for(let d=1;d<=n;d++){const dt=new Date(y,m,d),s=iso(dt),ev=evOn(s).filter(on),wd=(dt.getDay()+6)%7;if(wd>=HS())ev.length=0;
   const pr=["nasional","libur","ujian","rapor","kegiatan"],top=pr.map(t=>ev.find(e=>e.t==t)).find(Boolean);
-  const bg=top?`background:color-mix(in srgb,${ecol(top)} 16%,transparent)`:"";
+  const dq=(C.dc||{})[s],bg=dq?`background:color-mix(in srgb,${dq.c} 32%,transparent);${patcss(dq.p)}`:top?`background:color-mix(in srgb,${ecol(top)} 16%,transparent)`:"";
   h+=`<button class="d ${wd==6?"sun":""} ${top?"bg":""} ${s==sel?"sel":""} ${s==iso(today)?"td":""}" data-s="${s}" style="${bg}"><span>${d}</span>${eff(s)===false?`<small class="neb">${(C.ov||{})[s]?"✎ ":""}TE</small>`:""}<div class="dots">${ev.map(e=>`<i style="background:${ecol(e)}"></i>`).join("")}</div></button>`}
  $("cal").innerHTML=h;
- $("cal").querySelectorAll("button.d").forEach(b=>b.onclick=()=>{sel=b.dataset.s;if(markMode){toggleNE(sel);refresh()}else cal();detail()});detail()}
+ $("cal").querySelectorAll("button.d").forEach(b=>b.onclick=()=>{sel=b.dataset.s;if(markMode){toggleNE(sel);refresh()}else cal();detail();if(innerWidth<=820&&!markMode)$('dt').scrollIntoView({behavior:'smooth',block:'center'})});detail()}
 function item(e,extra){return `<div class="it"><i style="${sw(e)}"></i><div>${e.n}<small>${rng(e)} · ${T[e.t][0]}</small></div>${extra?`<em>${extra}</em>`:""}<button class="eb" data-id="${e.id}" title="Edit agenda">✎</button></div>`}
 function detail(){neBox();if(!sel){return}const d=P(sel),ev=evOn(sel);
  $("dt").textContent=["Ahad","Senin","Selasa","Rabu","Kamis","Jumat","Sabtu"][d.getDay()]+", "+fm(sel);
@@ -186,7 +186,7 @@ function pdfView(){let h="";
     ;
     const ev=evOn(iso(new Date(y,m,d))),top=PR.map(p=>ev.find(e=>e.t==p)).find(Boolean);
     const x=ev.some(e=>e.x||e.n=="Libur Ramadhan")?" x":"";
-    const st=r>0&&r<=HS()&&top?` style="${sw(top)};color:${ink(ecol(top))}"`:"";
+    const dq=(C.dc||{})[iso(new Date(y,m,d))],st=dq?` style="${sw(dq)};color:${ink(ecol(dq))}"`:r>0&&r<=HS()&&top?` style="${sw(top)};color:${ink(ecol(top))}"`:"";
     c+=`<td class="${r==0?"a":r==6&&HS()==5?"b":""}${x}"${st}>${t}</td>`}
    return `<tr>${c}</tr>`}).join("");
   const ms=iso(new Date(y,m,1)),me=iso(new Date(y,m,n));
@@ -245,10 +245,10 @@ $('cfc').onclick=()=>$('cfd').close();
 $('cfs').onclick=()=>{const o={...C};FL.forEach(([k])=>{const v=$('c_'+k).value;o[k]=NUM.includes(k)?+v:v.trim()});
  if(!o.y||o.y<2000||o.y>2100||!o.dinas){$('cer').textContent='Nama dinas dan tahun (2000–2100) wajib diisi dengan benar.';return}
  const dy=o.y-C.y;if(logoTmp===null)delete o.logo;else if(logoTmp)o.logo=logoTmp;
- if(dy){['a1','b1','a2','b2'].forEach(k=>{if($('c_'+k).value==C[k])o[k]=shiftY(o[k],dy)});E=E.map(e=>({...e,s:shiftY(e.s,dy),e:shiftY(e.e,dy)}));o.ov=Object.fromEntries(Object.entries(C.ov||{}).map(([k,v])=>[shiftY(k,dy),v]));save()}
+ if(dy){['a1','b1','a2','b2'].forEach(k=>{if($('c_'+k).value==C[k])o[k]=shiftY(o[k],dy)});E=E.map(e=>({...e,s:shiftY(e.s,dy),e:shiftY(e.e,dy)}));o.ov=Object.fromEntries(Object.entries(C.ov||{}).map(([k,v])=>[shiftY(k,dy),v]));o.dc=Object.fromEntries(Object.entries(C.dc||{}).map(([k,v])=>[shiftY(k,dy),v]));save()}
  C=o;saveC();syncY();applyC();$('cfd').close();refresh()};
 function resetMonth(i){const m=(i+6)%12,y=i<6?Y0:Y0+1,ms=iso(new Date(y,m,1)),me=iso(new Date(y,m+1,0));
- E=E.map(e=>{if(e.s>me||e.e<ms)return e;const{c,p,...r}=e;return r});save();refresh()}
+ E=E.map(e=>{if(e.s>me||e.e<ms)return e;const{c,p,...r}=e;return r});if(C.dc){C.dc={...C.dc};Object.keys(C.dc).forEach(k=>{if(k>=ms&&k<=me)delete C.dc[k]})}save();refresh()}
 let rmArm=null;
 document.addEventListener('click',ev=>{const b=ev.target.closest('[data-rm]');if(!b)return;const k=b.dataset.rm,i=k=='cur'?mi:+k;
  b.dataset.t=b.dataset.t||b.textContent;
@@ -263,12 +263,22 @@ function commit(){try{prevS=savedS;localStorage.setItem(KEY+'-prev',prevS);local
 $('ssv').onclick=commit;
 $('sbk').onclick=()=>{if(dirty){applySnap(savedS);dirty=false;bar()}else if(prevS){const p=prevS;applySnap(p);commit()}};
 addEventListener('beforeunload',e=>{if(dirty){e.preventDefault();e.returnValue=''}});
+const PAL=['#dc2626','#f97316','#facc15','#22c55e','#14b8a6','#60a5fa','#2563eb','#a78bfa','#ec4899','#9ca3af'];
+function setDc(c,p){C.dc={...(C.dc||{})};const u=C.dc[sel]||{c:'#60a5fa',p:'solid'};C.dc[sel]={c:c||u.c,p:p||u.p};save();refresh()}
+function dayX(){const q=(C.dc||{})[sel],cc=q?q.c:'#60a5fa';
+ $('ne').insertAdjacentHTML('beforeend',`<div style='margin-top:12px;font-size:.8rem;color:var(--mut)'>Warna tanggal ini</div><div class='sw' id='dcp' style='margin-top:4px'>${PAL.map(c=>`<button data-c='${c}' style='background:${c}${q&&q.c==c?';outline:2px solid var(--pri)':''}'></button>`).join('')}<input type='color' id='dcc' value='${cc}'></div><div class='pg' id='dpp' style='margin-top:8px'>${Object.keys(PT).map(k=>`<button data-p='${k}' class='${q&&(q.p||'solid')==k?'on':''}'><span style='background-color:${cc};${patcss(k)}'></span>${PT[k][0]}</button>`).join('')}</div><div class='act' style='margin-top:8px'><button class='ib' id='dca'>＋ Agenda di tanggal ini</button>${q?`<button class='ib' id='dcr'>Hapus warna</button>`:''}</div>`);
+ $('dcp').querySelectorAll('button').forEach(x=>x.onclick=()=>setDc(x.dataset.c,null));
+ $('dcc').onchange=()=>setDc($('dcc').value,null);
+ $('dpp').querySelectorAll('button').forEach(x=>x.onclick=()=>setDc(null,x.dataset.p));
+ $('dca').onclick=()=>openEd(null);
+ if($('dcr'))$('dcr').onclick=()=>{C.dc={...C.dc};delete C.dc[sel];save();refresh()}}
 const SG=document.querySelector('.sg');let markMode=false;const HS=()=>C.hs||5;$('hsq').onchange=()=>{C.hs=+$('hsq').value;save();refresh()};
 function defEff(s){if(s<iso(START)||s>iso(END))return null;const d=P(s);if((d.getDay()+6)%7>=HS())return null;if(!((s>=C.a1&&s<=C.b1)||(s>=C.a2&&s<=C.b2)))return false;return !E.some(e=>(e.t=='libur'||e.t=='nasional')&&e.s<=s&&e.e>=s)}
 function eff(s){const v=defEff(s);if(v===null)return null;const o=(C.ov||{})[s];return o?o=='e':v}
 function toggleNE(s){const v=eff(s);if(v===null)return;const want=!v;C.ov={...(C.ov||{})};if(want===defEff(s))delete C.ov[s];else C.ov[s]=want?'e':'x';save()}
 function EF(){let h=0;const w1=new Set(),w2=new Set();for(let d=new Date(START);d<=END;d.setDate(d.getDate()+1)){const s=iso(d);if(eff(s)===true){h++;const mo=new Date(d);mo.setDate(d.getDate()-(d.getDay()+6)%7);(s<=C.b1?w1:w2).add(iso(mo))}}return{hari:h,s1:w1.size,s2:w2.size,minggu:w1.size+w2.size}}
-function neBox(){const b=$('ne');if(!sel){b.innerHTML='';return}const v=eff(sel);
+function neBox(){neBox0();if(!sel)return;dayX()}
+function neBox0(){const b=$('ne');if(!sel){b.innerHTML='';return}const v=eff(sel);
  if(v===null){b.innerHTML='<small class="muted">Tanggal ini tidak dihitung sebagai hari efektif (akhir pekan atau di luar tahun pelajaran).</small>';return}
  const o=(C.ov||{})[sel];
  b.innerHTML=`<div>Status: <b style='color:${v?'var(--rapor)':'var(--nas)'}'>${v?'Hari efektif':'Tidak efektif'}</b>${o?' (diubah manual)':''}</div><div class='act' style='margin-top:8px'><button class='ib' id='neb'>${v?'Tandai tidak efektif':'Tandai efektif'}</button>${o?`<button class='ib' id='ner'>Kembalikan otomatis</button>`:''}</div>`;
